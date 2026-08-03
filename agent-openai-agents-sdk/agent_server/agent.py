@@ -23,6 +23,9 @@ from agent_server.utils import (
     process_agent_stream_events,
 )
 
+from agent_server.sql_tool import execute_pharmacovigilance_sql
+from agent_server.prompts import SYSTEM_PROMPT
+
 logger = logging.getLogger(__name__)
 
 # NOTE: this will work for all databricks models OTHER than GPT-OSS, which uses a slightly different API
@@ -77,9 +80,13 @@ async def connect_healthy_mcp_servers(
 def create_agent(mcp_servers: list[McpServer] | None = None) -> Agent:
     return Agent(
         name="Agent",
-        instructions="You are a helpful assistant.",
+        instructions=SYSTEM_PROMPT,
         model="databricks-gpt-5-2",
-        tools=[get_current_time],
+        # model = "fda_agent-bricks-endpoint",
+        tools=[
+            get_current_time,
+            execute_pharmacovigilance_sql,
+        ],
         mcp_servers=mcp_servers or [],
     )
 

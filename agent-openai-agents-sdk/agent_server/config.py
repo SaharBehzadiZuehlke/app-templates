@@ -1,0 +1,6 @@
+WAREHOUSE_ID = "b25e830f7d24bcc8"
+
+CATALOG = "rag_demo"
+SCHEMA = "rag"
+
+MAX_RETURN_ROWS = 100
